@@ -1,24 +1,27 @@
 import { useState } from "react";
 import Welcome from "./components/Welcome/Welcome";
+import WeatherScreen from "./components/WeatherScreen/WeatherScreen";
 
 function App() {
   const [userName, setUserName] = useState("");
   const [city, setCity] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
-  if (!isSubmitted) {
-    return (
-      <Welcome
-        userName={userName}
-        city={city}
-        onNameChange={setUserName}
-        onCityChange={setCity}
-        onContinue={() => setIsSubmitted(true)}
-      />
-    );
-  }
-
-  return <div>Weather Screen Here 🌤️</div>;
+  return (
+    <>
+      {!isReady ? (
+        <Welcome
+          userName={userName}
+          city={city}
+          onNameChange={setUserName}
+          onCityChange={setCity}
+          onContinue={() => setIsReady(true)}
+        />
+      ) : (
+        <WeatherScreen userName={userName} city={city} />
+      )}
+    </>
+  );
 }
 
 export default App;

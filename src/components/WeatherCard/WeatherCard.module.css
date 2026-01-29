@@ -1,0 +1,54 @@
+.card {
+  background: linear-gradient(135deg, #e6f7f8, #ffffff);
+  border-radius: 16px;
+  padding: 1rem;
+  margin-top: 1rem;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.city {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #024c51;
+}
+
+.condition {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.temp {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #024c51;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.details div {
+  flex: 1;
+}
+
+.details p {
+  margin: 0.2rem 0;
+  font-size: 0.75rem;
+  color: #777;
+}
+
+.details strong {
+  font-size: 0.9rem;
+  color: #333;
+}
