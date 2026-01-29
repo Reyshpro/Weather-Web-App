@@ -1,0 +1,15 @@
+.tip {
+  margin-top: 1.2rem;
+  padding: 0.8rem 1rem;
+
+  background: #f0fbfc;
+  border-radius: 14px;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #024c51;
+}

@@ -2,6 +2,9 @@ import SearchBar from "../SearchBar/SearchBar";
 import WeatherCard from "../WeatherCard/WeatherCard";
 import styles from "./WeatherScreen.module.css";
 import { FiRefreshCw } from "react-icons/fi";
+import OtherCities from "../OtherCities/OtherCities";
+import WeatherTip from "../WeatherTip/WeatherTip";
+
 
 
 type WeatherScreenProps = {
@@ -53,7 +56,8 @@ function WeatherScreen({ userName, city }: WeatherScreenProps) {
     </div>
   </div>
 </section>
-
+ <OtherCities />
+ <WeatherTip />
     </div>
   );
 }

@@ -2,8 +2,8 @@
   background: linear-gradient(135deg, #e6f7f8, #ffffff);
   border-radius: 16px;
   padding: 1rem;
+  padding-bottom: 2rem;
   margin-top: 1rem;
-
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
