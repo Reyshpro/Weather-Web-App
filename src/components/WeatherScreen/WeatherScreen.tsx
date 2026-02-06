@@ -11,12 +11,17 @@ type WeatherScreenProps = {
   userName: string;
   city: string;
 };
+  function capitalize(name: string) {
+    if (!name) return "";
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  }
+
 
 function WeatherScreen({ userName, city }: WeatherScreenProps) {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h2>Hi {userName} 👋</h2>
+        <h2>Hi {capitalize(userName)} 👋</h2>
         <button className={styles.refreshBtn} aria-label="Refresh weather">
   <FiRefreshCw size={20} />
 </button>

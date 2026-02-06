@@ -2,11 +2,10 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-
+  position: relative;
   background: #fff;
   padding: 0.4rem 0.6rem;
   border-radius: 12px;
-
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -33,4 +32,31 @@
 
 .button:hover {
   background-color: rgba(2, 76, 81, 0.1);
+}
+
+.dropdown {
+  position: absolute;
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  margin-top: 4px;
+  list-style: none;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.dropdown li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown li:hover {
+  background: #f0f0f0;
+}
+
+.noResult {
+  padding: 10px;
+  color: #888;
 }
