@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { cities } from "../../data/cities";
+import { useEffect, useState } from "react";
+import { fetchCitySuggestions } from "../../services/cityService";
+import type { CitySuggestion } from "../../services/cityService";
+
 import styles from "./Welcome.module.css";
 
 type WelcomeProps = {
@@ -21,9 +23,25 @@ function Welcome({
 }: WelcomeProps) {
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const filteredCities = cities.filter((c) =>
-    `${c.name}, ${c.country}`.toLowerCase().startsWith(city.toLowerCase())
-  );
+  const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
+
+  useEffect(() => {
+  const timeout = setTimeout(async () => {
+    if (!city) {
+      setSuggestions([]);
+      return;
+    }
+
+  const results = await fetchCitySuggestions(city);
+  console.log("Results:", results);
+  setSuggestions(results);
+
+  }, 300);
+
+  return () => clearTimeout(timeout);
+}, [city]);
+
+
 
   return (
     <div className={styles.container}>
@@ -56,25 +74,27 @@ function Welcome({
           }}
         />
 
-        {showDropdown && city && (
-          <ul className={styles.dropdown}>
-            {filteredCities.length > 0 ? (
-              filteredCities.map((c) => (
-                <li
-                  key={`${c.name}-${c.country}`}
-                  onClick={() => {
-                    onCityChange(`${c.name}, ${c.country}`);
-                    setShowDropdown(false);
-                  }}
-                >
-                  {c.name}, {c.country}
-                </li>
-              ))
-            ) : (
-              <li className={styles.noResult}>No city found</li>
-            )}
-          </ul>
-        )}
+    {showDropdown && city && (
+  <ul className={styles.dropdown}>
+    {suggestions.length > 0 ? (
+      suggestions.map((s, i) => (
+        <li
+          key={i}
+          onClick={() => {
+            onCityChange(`${s.name}, ${s.country}`);
+            setShowDropdown(false);
+          }}
+        >
+          {s.name}, {s.country}
+        </li>
+      ))
+    ) : (
+      <li className={styles.noResult}>No city found</li>
+    )}
+  </ul>
+)}
+
+
       </div>
 
       <button
