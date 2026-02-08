@@ -1,34 +1,47 @@
 import styles from "./WeatherCard.module.css";
+import type { WeatherData } from "../../services/weatherService";
+import type { CitySuggestion } from "../../services/cityService";
 
-const WeatherCard = () => {
+type WeatherCardProps = {
+  weather: WeatherData;
+  city: CitySuggestion;
+};
+
+const WeatherCard = ({ weather, city }: WeatherCardProps) => {
   return (
     <div className={styles.card}>
       <div className={styles.main}>
         <div>
-          <h3 className={styles.city}>Gaziantep</h3>
-          <p className={styles.condition}>Partly Cloudy</p>
+          <h3 className={styles.city}>
+            {city.name}, {city.country}
+          </h3>
+          <p className={styles.condition}>
+            {weather.description}
+          </p>
         </div>
 
-        <div className={styles.temp}>22°</div>
+        <div className={styles.temp}>
+          {Math.round(weather.temp)}°
+        </div>
       </div>
 
       <div className={styles.details}>
         <div>
           <span>💨</span>
           <p>Wind</p>
-          <strong>12 km/h</strong>
+          <strong>{weather.wind} m/s</strong>
         </div>
 
         <div>
           <span>🌧️</span>
           <p>Rain</p>
-          <strong>20%</strong>
+          <strong>{Math.round(weather.rainChance)}%</strong>
         </div>
 
         <div>
           <span>💧</span>
           <p>Humidity</p>
-          <strong>60%</strong>
+          <strong>{weather.humidity}%</strong>
         </div>
       </div>
     </div>

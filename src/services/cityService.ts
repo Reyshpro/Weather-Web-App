@@ -16,10 +16,11 @@ export async function fetchCitySuggestions(query: string) {
 
   const data = await res.json();
 
-  return data.map((city: any) => ({
-    name: city.name,
-    country: city.country,
-    lat: city.lat,
-    lon: city.lon,
+  return data.map((item: any) => ({
+    name: item.name,
+    country: item.country,
+    lat: item.lat,
+    lon: item.lon,
   }));
+
 }

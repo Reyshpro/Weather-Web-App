@@ -8,7 +8,7 @@ type WelcomeProps = {
   userName: string;
   city: string;
   onNameChange: (value: string) => void;
-  onCityChange: (value: string) => void;
+  onCityChange: (value: CitySuggestion) => void;
   onContinue: () => void;
   isNameValid: boolean;
 };
@@ -22,26 +22,23 @@ function Welcome({
   isNameValid,
 }: WelcomeProps) {
   const [showDropdown, setShowDropdown] = useState(false);
-
+  const [cityInput, setCityInput] = useState(city);
   const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
 
   useEffect(() => {
-  const timeout = setTimeout(async () => {
-    if (!city) {
-      setSuggestions([]);
-      return;
-    }
+    const timeout = setTimeout(async () => {
+      if (!cityInput) {
+        setSuggestions([]);
+        return;
+      }
 
-  const results = await fetchCitySuggestions(city);
-  console.log("Results:", results);
-  setSuggestions(results);
+      const results = await fetchCitySuggestions(cityInput);
+      console.log("Results:", results);
+      setSuggestions(results);
+    }, 300);
 
-  }, 300);
-
-  return () => clearTimeout(timeout);
-}, [city]);
-
-
+    return () => clearTimeout(timeout);
+  }, [cityInput]);
 
   return (
     <div className={styles.container}>
@@ -62,45 +59,43 @@ function Welcome({
 
         <input
           type="text"
-          value={city}
+          value={cityInput}
           placeholder="Start typing a city..."
           onChange={(e) => {
-            onCityChange(e.target.value);
+            setCityInput(e.target.value);
             setShowDropdown(true);
           }}
           onBlur={() => {
-           
             setTimeout(() => setShowDropdown(false), 150);
           }}
         />
 
-    {showDropdown && city && (
-  <ul className={styles.dropdown}>
-    {suggestions.length > 0 ? (
-      suggestions.map((s, i) => (
-        <li
-          key={i}
-          onClick={() => {
-            onCityChange(`${s.name}, ${s.country}`);
-            setShowDropdown(false);
-          }}
-        >
-          {s.name}, {s.country}
-        </li>
-      ))
-    ) : (
-      <li className={styles.noResult}>No city found</li>
-    )}
-  </ul>
-)}
-
-
+        {showDropdown && cityInput && (
+          <ul className={styles.dropdown}>
+            {suggestions.length > 0 ? (
+              suggestions.map((s, i) => (
+                <li
+                  key={i}
+                  onClick={() => {
+                    setCityInput(`${s.name}, ${s.country}`);
+                    onCityChange(s); 
+                    setShowDropdown(false);
+                  }}
+                >
+                  {s.name}, {s.country}
+                </li>
+              ))
+            ) : (
+              <li className={styles.noResult}>No city found</li>
+            )}
+          </ul>
+        )}
       </div>
 
       <button
         className={styles.button}
         onClick={onContinue}
-         disabled={!isNameValid || !city}
+        disabled={!isNameValid || !cityInput}
       >
         See my weather →
       </button>

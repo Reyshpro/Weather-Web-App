@@ -1,10 +1,11 @@
 import { useState } from "react";
 import Welcome from "./components/Welcome/Welcome";
 import WeatherScreen from "./components/WeatherScreen/WeatherScreen";
+import type { CitySuggestion } from "./services/cityService";
 
 function App() {
   const [userName, setUserName] = useState("");
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState<CitySuggestion | null>(null);
   const [isReady, setIsReady] = useState(false);
 
   const isValidName = (name: string) => {
@@ -23,15 +24,16 @@ function App() {
       {!isReady ? (
         <Welcome
           userName={userName}
-          city={city}
+          city={city ? `${city.name}, ${city.country}` : ""}
           onNameChange={setUserName}
           onCityChange={setCity}
           onContinue={() => setIsReady(true)}
-          isNameValid={isValidName(userName)} 
+          isNameValid={isValidName(userName)}
         />
-      ) : (
-        <WeatherScreen userName={userName} city={city} />
-      )}
+) : city ? (
+  <WeatherScreen userName={userName} city={city} />
+) : null}
+
     </>
   );
 }
