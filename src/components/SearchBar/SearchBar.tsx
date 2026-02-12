@@ -13,6 +13,7 @@ const SearchBar = ({ onCitySelect }: SearchBarProps) => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [selected, setSelected] = useState<CitySuggestion | null>(null);
 
  
   useEffect(() => {
@@ -28,11 +29,27 @@ const SearchBar = ({ onCitySelect }: SearchBarProps) => {
 
     return () => clearTimeout(timeout);
   }, [query]);
+const handleSearch = () => {
+  if (selected) {
+    onCitySelect(selected);
+
+    setQuery("");
+    setSelected(null);
+    setSuggestions([]);
+    setShowDropdown(false);
+  }
+};
+
+
 
   return (
     <div className={styles.searchBar}>
       <input
         type="text"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleSearch();
+        }}
+
         placeholder="Search for a city..."
         value={query}
         className={styles.input}
@@ -45,7 +62,12 @@ const SearchBar = ({ onCitySelect }: SearchBarProps) => {
         }}
       />
 
-      <button className={styles.button} aria-label="Search">
+      <button
+      className={styles.button}
+      aria-label="Search"
+      onClick={handleSearch}
+      >
+
         <FiSearch size={18} />
       </button>
 
@@ -57,9 +79,10 @@ const SearchBar = ({ onCitySelect }: SearchBarProps) => {
                 key={i}
                 onClick={() => {
                   setQuery(`${s.name}, ${s.country}`);
+                  setSelected(s);
                   setShowDropdown(false);
-                  onCitySelect(s);
                 }}
+
 
               >
                 {s.name}, {s.country}
