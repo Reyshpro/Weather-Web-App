@@ -104,7 +104,7 @@ function WeatherScreen({ userName, city }: WeatherScreenProps) {
       </section>
 
       <OtherCities />
-      <WeatherTip />
+     {weather && <WeatherTip weather={weather} />}
     </div>
   );
 }
