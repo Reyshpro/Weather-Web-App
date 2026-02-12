@@ -5,7 +5,11 @@ import type { CitySuggestion } from "../../services/cityService";
 
 import styles from "./SearchBar.module.css";
 
-const SearchBar = () => {
+type SearchBarProps = {
+  onCitySelect: (city: CitySuggestion) => void;
+};
+
+const SearchBar = ({ onCitySelect }: SearchBarProps) => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -54,7 +58,9 @@ const SearchBar = () => {
                 onClick={() => {
                   setQuery(`${s.name}, ${s.country}`);
                   setShowDropdown(false);
+                  onCitySelect(s);
                 }}
+
               >
                 {s.name}, {s.country}
               </li>

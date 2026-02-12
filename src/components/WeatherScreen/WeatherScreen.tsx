@@ -9,6 +9,7 @@ import { fetchWeather } from "../../services/weatherService";
 import type { WeatherData } from "../../services/weatherService";
 import type { CitySuggestion } from "../../services/cityService";
 
+
 type WeatherScreenProps = {
   userName: string;
   city: CitySuggestion;
@@ -20,7 +21,9 @@ function capitalize(name: string) {
 }
 
 function WeatherScreen({ userName, city }: WeatherScreenProps) {
+  const [selectedCity, setSelectedCity] = useState(city);
   const [weather, setWeather] = useState<WeatherData | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,7 +32,7 @@ function WeatherScreen({ userName, city }: WeatherScreenProps) {
       setLoading(true);
       setError(null);
 
-     const data = await fetchWeather(city.lat, city.lon);
+     const data = await fetchWeather(selectedCity.lat, selectedCity.lon);
 
       setWeather(data);
     } catch (err) {
@@ -40,9 +43,10 @@ function WeatherScreen({ userName, city }: WeatherScreenProps) {
     }
   };
 
-  useEffect(() => {
+    useEffect(() => {
     loadWeather();
-  }, [city]);
+  }, [selectedCity]);
+
 
   return (
     <div className={styles.container}>
@@ -58,14 +62,15 @@ function WeatherScreen({ userName, city }: WeatherScreenProps) {
         </button>
       </header>
 
-      <SearchBar />
+      <SearchBar onCitySelect={setSelectedCity} />
+
 
       {loading ? (
         <p>Loading weather...</p>
       ) : error ? (
         <p>{error}</p>
       ) : weather ? (
-       <WeatherCard weather={weather} city={city} />
+     <WeatherCard weather={weather} city={selectedCity} />
       ) : null}
 
       <section className={styles.hourly}>
