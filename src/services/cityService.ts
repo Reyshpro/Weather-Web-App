@@ -3,6 +3,7 @@ export type CitySuggestion = {
   country: string;
   lat: number;
   lon: number;
+  countryCode: string;
 };
 
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
@@ -21,6 +22,7 @@ export async function fetchCitySuggestions(query: string) {
     country: item.country,
     lat: item.lat,
     lon: item.lon,
+    countryCode: item.country,
   }));
 
 }
