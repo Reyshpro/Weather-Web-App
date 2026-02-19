@@ -74,14 +74,15 @@ function Welcome({
           <ul className={styles.dropdown}>
             {suggestions.length > 0 ? (
               suggestions.map((s, i) => (
-                <li
-                  key={i}
-                  onClick={() => {
-                    setCityInput(`${s.name}, ${s.country}`);
-                    onCityChange(s); 
-                    setShowDropdown(false);
-                  }}
-                >
+<li
+  key={i}
+  onMouseDown={() => {
+    setCityInput(`${s.name}, ${s.country}`);
+    onCityChange(s);
+    setShowDropdown(false);
+  }}
+>
+
                   {s.name}, {s.country}
                 </li>
               ))
