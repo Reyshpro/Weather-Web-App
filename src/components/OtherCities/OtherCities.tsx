@@ -20,42 +20,56 @@ const OtherCities = ({ countryCode, currentCity }: OtherCitiesProps) => {
   const [citiesWeather, setCitiesWeather] = useState<CityWeather[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const loadCities = async () => {
-      try {
-        setLoading(true);
+useEffect(() => {
+  let cancelled = false;
 
-        const cities = await fetchCitiesByCountry(countryCode);
+  const loadCities = async () => {
+    try {
+      setLoading(true);
 
-       
-        const filtered = cities.filter(
-          (c: any) => c.city !== currentCity.name
-        );
+      const cities = await fetchCitiesByCountry(countryCode);
 
-        // Fetch weather for each city
-        const weatherPromises = filtered.slice(0, 4).map(async (c: any) => {
-          const weather = await fetchWeather(c.latitude, c.longitude);
+      const filtered = cities
+        .filter((c) => c.name !== currentCity.name)
+        .slice(0, 4);
 
-          return {
-            city: c.city || c.name,
-            weather,
-          };
+      const results: CityWeather[] = [];
+
+      for (const c of filtered) {
+        const weather = await fetchWeather(c.latitude, c.longitude);
+
+        results.push({
+          city: c.name,
+          weather,
         });
 
-        const results = await Promise.all(weatherPromises);
-
-        setCitiesWeather(results);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
+        
+        await new Promise(res => setTimeout(res, 300));
       }
-    };
 
-    loadCities();
-  }, [countryCode, currentCity]);
+      if (!cancelled) {
+        setCitiesWeather(results);
+      }
+
+    } catch (err) {
+      console.error("OtherCities error:", err);
+    } finally {
+      if (!cancelled) setLoading(false);
+    }
+  };
+
+  loadCities();
+
+  return () => {
+    cancelled = true;
+  };
+
+}, [countryCode, currentCity.name]);
 
   if (loading) return <p>Loading other cities...</p>;
+
+  if (!loading && citiesWeather.length === 0)
+    return <p>Other cities unavailable (API limit reached)</p>;
 
   return (
     <section className={styles.container}>

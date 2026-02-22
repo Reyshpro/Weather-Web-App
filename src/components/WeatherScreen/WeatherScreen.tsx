@@ -24,7 +24,6 @@ function capitalize(name: string) {
 function WeatherScreen({ userName, city }: WeatherScreenProps) {
   const [selectedCity, setSelectedCity] = useState(city);
   const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [otherCities, setOtherCities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -48,28 +47,7 @@ function WeatherScreen({ userName, city }: WeatherScreenProps) {
     loadWeather();
   }, [selectedCity]);
 
-useEffect(() => {
-  const loadOtherCities = async () => {
-    try {
-      const cities = await fetchCitiesByCountry(selectedCity.countryCode || selectedCity.country);
 
-      const weatherData = await Promise.all(
-        cities
-          .filter(c => c.name !== selectedCity.name)
-          .map(async (c) => {
-            const weather = await fetchWeather(c.latitude, c.longitude);
-            return { ...c, weather };
-          })
-      );
-
-      setOtherCities(weatherData);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  loadOtherCities();
-}, [selectedCity]);
 
 
 
